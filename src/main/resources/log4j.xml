@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="false"
+                     xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="threshold" value="trace" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"  value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %t %c{1}:%L - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="fileAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="threshold" value="trace" />
+        <param name="Append" value="true"/>
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="FileNamePattern" value="log/_/log4j.%d{yyyy-MM-dd_HH}.log"/>
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %t %c{1}:%L - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="asyncFileAppender" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="5000"/>
+        <appender-ref ref="fileAppender"/>
+    </appender>
+
+    <logger name="com.github.keeperlink.bitfinex" additivity="true">
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="com.github.keeperlink.bitfinex.api" additivity="true">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="com.github.keeperlink.bitfinex.api.v2" additivity="true">
+        <level value="TRACE"/>
+    </logger>
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="console" />
+        <appender-ref ref="asyncFileAppender" />
+    </root>
+
+</log4j:configuration>
